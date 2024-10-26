@@ -1,12 +1,14 @@
-import React from "react";
 import "./App.css";
 import PropertiesPanel from "./components/PropertiesPanel";
-// import { PropertiesPanel } from "./PropertiesPanel.res";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <div className="App">
-      <PropertiesPanel />
+      <QueryClientProvider client={queryClient}>
+        <PropertiesPanel />
+      </QueryClientProvider>
     </div>
   );
 }

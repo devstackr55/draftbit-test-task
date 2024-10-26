@@ -1,6 +1,6 @@
 import React from "react";
 import Collapsible from "./Collapsible";
-import PaddingMarginInterface from "./PaddingMarginInterface";
+import PaddingMarginConfig from "./PaddingMarginInterface";
 
 const PropertiesPanel: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const PropertiesPanel: React.FC = () => {
         <p>Example content goes here.</p>
       </Collapsible>
       <Collapsible title="Margins & Padding">
-        <PaddingMarginInterface />
+        <PaddingMarginConfig />
       </Collapsible>
       <Collapsible title="Size">
         <p>Size settings go here.</p>

@@ -1,12 +1,16 @@
 import { ChevronDown, Smartphone } from "lucide-react";
-import { useRef } from "react";
 import { useClickOutside } from "../hooks/useClickOutside";
+import { SpacingConfig } from "../utils";
+import { useRef } from "react";
 
-export const MarginPopover: React.FC<{
+const MarginPopover: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   anchorEl: HTMLElement | null;
-}> = ({ isOpen, onClose, anchorEl }) => {
+  property: keyof SpacingConfig;
+  value: string;
+  onChange: (value: string) => void;
+}> = ({ isOpen, onClose, anchorEl, property, value, onChange }) => {
   const popoverRef = useRef<HTMLDivElement>(null);
   useClickOutside(popoverRef, onClose);
 
@@ -54,7 +58,9 @@ export const MarginPopover: React.FC<{
       <div className="p-4 border-b border-[rgb(71,85,105)]">
         <div className="flex items-center gap-2">
           <Smartphone className="w-4 h-4 text-[rgb(248,250,252)]" />
-          <span className="text-[rgb(248,250,252)] font-medium">marginTop</span>
+          <span className="text-[rgb(248,250,252)] font-medium">
+            {property}
+          </span>
         </div>
         <p className="text-blue-400 text-sm mt-1">
           Configure a value for Mobile screen sizes or larger
@@ -70,7 +76,9 @@ export const MarginPopover: React.FC<{
             <input
               type="text"
               className="bg-slate-800 text-[rgb(248,250,252)] rounded px-3 py-1.5 flex-grow focus:ring-2 focus:ring-blue-500 outline-none"
-              defaultValue="auto"
+              value={value === "auto" ? "" : value}
+              onChange={(e) => onChange(e.target.value || "auto")}
+              placeholder="auto"
             />
             <select className="bg-slate-800 text-[rgb(248,250,252)] px-3 py-1.5 rounded focus:ring-2 focus:ring-blue-500 outline-none">
               <option>pt</option>
@@ -109,3 +117,5 @@ export const MarginPopover: React.FC<{
     </div>
   );
 };
+
+export default MarginPopover;

@@ -1,17 +1,40 @@
 import React, { useState, useCallback } from "react";
-import { MarginPopover } from "./Popover";
+import { getSpacingConfig, SpacingConfig, updateSpacingConfig } from "../utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import MarginPopover from "./Popover";
 
 const fontStyle = {
   fontFamily: '"Inter var", sans-serif',
 };
 
-export default function Component() {
+export default function PaddingMarginConfig() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [activeProperty, setActiveProperty] = useState<
+    keyof SpacingConfig | null
+  >(null);
+
+  const queryClient = useQueryClient();
+
+  const { data: spacingConfig, isLoading } = useQuery<SpacingConfig>({
+    queryKey: ["spacingConfig"],
+    queryFn: getSpacingConfig,
+  });
+
+  const mutation = useMutation({
+    mutationFn: updateSpacingConfig,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["spacingConfig"] });
+    },
+  });
 
   const handlePopoverOpen = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    (
+      event: React.MouseEvent<HTMLButtonElement>,
+      property: keyof SpacingConfig
+    ) => {
       setAnchorEl(event.currentTarget);
+      setActiveProperty(property);
       setIsPopoverOpen(true);
     },
     []
@@ -19,7 +42,18 @@ export default function Component() {
 
   const handlePopoverClose = useCallback(() => {
     setIsPopoverOpen(false);
+    setActiveProperty(null);
   }, []);
+
+  const handleValueChange = useCallback(
+    (value: string) => {
+      if (activeProperty && spacingConfig) {
+        const newConfig = { ...spacingConfig, [activeProperty]: value };
+        mutation.mutate(newConfig);
+      }
+    },
+    [activeProperty, spacingConfig, mutation]
+  );
 
   const SpacingButton: React.FC<{
     value?: string;
@@ -40,17 +74,31 @@ export default function Component() {
     </button>
   );
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!spacingConfig) {
+    return <div>Error loading spacing configuration</div>;
+  }
+
   return (
     <div className="bg-slate-900 p-8 rounded-lg" style={fontStyle}>
       <div className="text-blue-400 text-sm mb-4">INDIVIDUAL</div>
 
       <div className="relative flex flex-col items-center gap-2">
         {/* Top margin */}
-        <SpacingButton onClick={handlePopoverOpen} />
+        <SpacingButton
+          value={spacingConfig?.marginTop}
+          onClick={(e) => handlePopoverOpen(e, "marginTop")}
+        />
 
         <div className="flex items-center gap-2">
           {/* Left margin */}
-          <SpacingButton onClick={handlePopoverOpen} />
+          <SpacingButton
+            value={spacingConfig?.marginLeft}
+            onClick={(e) => handlePopoverOpen(e, "marginLeft")}
+          />
 
           {/* Padding container */}
           <div className="relative" style={{ width: "200px", height: "200px" }}>
@@ -70,7 +118,10 @@ export default function Component() {
               className="absolute left-1/2 -translate-x-1/2"
               style={{ top: "1rem" }}
             >
-              <SpacingButton onClick={handlePopoverOpen} />
+              <SpacingButton
+                value={spacingConfig?.paddingTop}
+                onClick={(e) => handlePopoverOpen(e, "paddingTop")}
+              />
             </div>
 
             {/* Left padding button */}
@@ -78,7 +129,10 @@ export default function Component() {
               className="absolute top-1/2 -translate-y-1/2"
               style={{ left: "1rem" }}
             >
-              <SpacingButton onClick={handlePopoverOpen} />
+              <SpacingButton
+                value={spacingConfig?.paddingLeft}
+                onClick={(e) => handlePopoverOpen(e, "paddingLeft")}
+              />
             </div>
 
             {/* Right padding button */}
@@ -87,9 +141,9 @@ export default function Component() {
               style={{ right: "1rem" }}
             >
               <SpacingButton
-                value="16pt"
+                value={spacingConfig?.paddingRight}
                 isActive={true}
-                onClick={handlePopoverOpen}
+                onClick={(e) => handlePopoverOpen(e, "paddingRight")}
               />
             </div>
 
@@ -98,23 +152,37 @@ export default function Component() {
               className="absolute left-1/2 -translate-x-1/2"
               style={{ bottom: "1rem" }}
             >
-              <SpacingButton onClick={handlePopoverOpen} />
+              <SpacingButton
+                value={spacingConfig?.paddingBottom}
+                onClick={(e) => handlePopoverOpen(e, "paddingBottom")}
+              />
             </div>
           </div>
 
           {/* Right margin */}
-          <SpacingButton onClick={handlePopoverOpen} />
+          <SpacingButton
+            value={spacingConfig?.marginRight}
+            onClick={(e) => handlePopoverOpen(e, "marginRight")}
+          />
         </div>
 
         {/* Bottom margin */}
-        <SpacingButton onClick={handlePopoverOpen} />
-      </div>
+        <SpacingButton
+          value={spacingConfig?.marginBottom}
+          onClick={(e) => handlePopoverOpen(e, "marginBottom")}
+        />
 
-      <MarginPopover
-        isOpen={isPopoverOpen}
-        onClose={handlePopoverClose}
-        anchorEl={anchorEl}
-      />
+        {activeProperty && (
+          <MarginPopover
+            isOpen={isPopoverOpen}
+            onClose={handlePopoverClose}
+            anchorEl={anchorEl}
+            property={activeProperty}
+            value={spacingConfig[activeProperty]}
+            onChange={handleValueChange}
+          />
+        )}
+      </div>
     </div>
   );
 }
