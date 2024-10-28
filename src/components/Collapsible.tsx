@@ -10,7 +10,6 @@ const Collapsible: React.FC<CollapsibleProps> = ({ title, children }) => {
   const [collapsed, setCollapsed] = useState(true);
 
   const toggleCollapse = () => {
-    console.log("runn");
     setCollapsed((prev) => !prev);
   };
 

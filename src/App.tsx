@@ -3,6 +3,7 @@ import "./App.css";
 import PropertiesPanel from "./components/PropertiesPanel";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useToast } from "./context/ToastContext";
+import MobileScreen from "./screen/MobileScreen";
 const queryClient = new QueryClient();
 
 function App() {
@@ -21,7 +22,15 @@ function App() {
       <button onClick={handleSuccess}>Show Success Toast</button>
       <button onClick={handleError}>Show Error Toast</button>
       <QueryClientProvider client={queryClient}>
-        <PropertiesPanel />
+        <div className="flex">
+          <PropertiesPanel />
+          <div
+            className="flex justify-center w-full items-center
+          "
+          >
+            <MobileScreen />
+          </div>
+        </div>
       </QueryClientProvider>
     </div>
   );
