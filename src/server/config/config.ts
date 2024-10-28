@@ -60,9 +60,11 @@ const config = convict({
 
 // Load environment-dependent configuration
 const env = config.get("nodeEnv");
-config.loadFile(`./src/server/src/config/${env}.json`);
+config.loadFile(`./src/server/config/${env}.json`);
 
 // Perform validation
 config.validate({ allowed: "strict" });
 
 export default config;
+
+//

@@ -1,18 +1,17 @@
+import "reflect-metadata"; // Ensure this is at the top of your entry file
+import { createConnection } from "typeorm"; // Import TypeORM or your other modules
+
 import express, { Express } from "express";
 import cors from "cors";
-
 import { AppDataSource } from "./data-source";
-import config from "./src/config/config";
-// import initRoutes from "./src/routes";
+import config from "./config/config";
 import morgan from "morgan";
 
 const PORT: number = config.get("port");
 const app: Express = express();
 
 app.use(express.json());
-
 app.use(cors());
-
 app.use(morgan("dev"));
 
 // initRoutes(app);
@@ -33,4 +32,5 @@ const startServer = async (): Promise<void> => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
+
 startServer();

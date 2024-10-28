@@ -1,5 +1,9 @@
+// require("@babel/register")({
+//   extensions: [".js", ".ts"],
+// });
+import "reflect-metadata";
 import { DataSource } from "typeorm";
-import config from "./src/config/config";
+import config from "./config/config";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -8,8 +12,8 @@ export const AppDataSource = new DataSource({
   username: config.get("database.username"),
   password: config.get("database.password"),
   database: config.get("database.name"),
-  entities: ["src/models/**/*.ts"],
-  migrations: ["src/migrations/**/*.ts"],
+  entities: ["./models/**/*.ts"],
+  migrations: ["./migrations/**/*.ts"],
   synchronize: false,
   logging: true,
 });
