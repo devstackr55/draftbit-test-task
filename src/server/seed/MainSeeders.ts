@@ -1,6 +1,4 @@
-// src/seeders/MainSeeder.ts
 import { define, Factory, Seeder } from "typeorm-seeding";
-import { Connection } from "typeorm";
 import { Screen } from "../models/Screen";
 import { Component } from "../models/Component";
 import { Border } from "../models/Border";
@@ -10,30 +8,25 @@ import { Effect } from "../models/Effect";
 import { Position } from "../models/Position";
 import { MarginPadding } from "../models/MarginPadding";
 import { MeasurementUnit } from "../models/MeasurementUnit";
+import { DataSource } from "typeorm";
 
 export default class CreateInitialData implements Seeder {
-  public async run(factory: Factory, connection: Connection): Promise<void> {
+  public async run(factory: Factory, dataSource: DataSource): Promise<void> {
     // Create screens
-    const screens = await connection
-      .createQueryBuilder()
-      .insert()
-      .into(Screen)
-      .values([
-        { name: "Home Screen" },
-        { name: "Profile Screen" },
-        { name: "Settings Screen" },
-        { name: "Dashboard Screen" },
-      ])
-      .execute();
-
-    const screenIds = screens.identifiers.map((screen) => screen.id);
+    const screens = await dataSource.manager.save(Screen, [
+      { name: "Home Screen" },
+      { name: "Profile Screen" },
+      { name: "Settings Screen" },
+      { name: "Dashboard Screen" },
+    ]);
+    const screenIds = screens.map((screen) => screen.id);
 
     // Component types array for variation
     const componentTypes = ["button", "input", "text", "image", "container"];
 
     // Create components for each screen
     for (const screenId of screenIds) {
-      const components = await connection
+      const components = await dataSource
         .createQueryBuilder()
         .insert()
         .into(Component)
@@ -53,7 +46,7 @@ export default class CreateInitialData implements Seeder {
       // Create layout settings and related entities for each component
       for (const component of components.identifiers) {
         // Create layout setting
-        const layoutSetting = await connection
+        const layoutSetting = await dataSource
           .createQueryBuilder()
           .insert()
           .into(LayoutSetting)
@@ -65,7 +58,7 @@ export default class CreateInitialData implements Seeder {
         const layoutSettingId = layoutSetting.identifiers[0].id;
 
         // Create border
-        await connection
+        await dataSource
           .createQueryBuilder()
           .insert()
           .into(Border)
@@ -75,7 +68,7 @@ export default class CreateInitialData implements Seeder {
           .execute();
 
         // Create layout
-        await connection
+        await dataSource
           .createQueryBuilder()
           .insert()
           .into(Layout)
@@ -85,7 +78,7 @@ export default class CreateInitialData implements Seeder {
           .execute();
 
         // Create effect
-        await connection
+        await dataSource
           .createQueryBuilder()
           .insert()
           .into(Effect)
@@ -95,7 +88,7 @@ export default class CreateInitialData implements Seeder {
           .execute();
 
         // Create position
-        await connection
+        await dataSource
           .createQueryBuilder()
           .insert()
           .into(Position)
@@ -105,7 +98,7 @@ export default class CreateInitialData implements Seeder {
           .execute();
 
         // Create margin padding with random values
-        await connection
+        await dataSource
           .createQueryBuilder()
           .insert()
           .into(MarginPadding)

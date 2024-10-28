@@ -1,6 +1,3 @@
-// require("@babel/register")({
-//   extensions: [".js", ".ts"],
-// });
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import config from "./config/config";
@@ -12,8 +9,10 @@ export const AppDataSource = new DataSource({
   username: config.get("database.username"),
   password: config.get("database.password"),
   database: config.get("database.name"),
-  entities: ["./models/**/*.ts"],
-  migrations: ["./migrations/**/*.ts"],
+  entities: ["src/server/models/**/*.ts"],
+  migrations: ["src/server/migrations/**/*.ts"],
   synchronize: false,
   logging: true,
+  // seeds: ["dist/seeders/**/*{.ts,.js}"], // Ensure this path is correct
+  // factories: ["dist/factories/**/*{.ts,.js}"], // Ensure this path is correct
 });
