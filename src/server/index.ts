@@ -33,5 +33,4 @@ const startServer = async (): Promise<void> => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
-
 startServer();
