@@ -3,32 +3,42 @@ import { getSpacingConfig, SpacingConfig, updateSpacingConfig } from "../utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import MarginPopover from "./Popover";
 import { useMarginPadding } from "../hooks/useMarginPadding"; // Adjust the import path as needed
+import { useUpdateMarginPadding } from "../hooks/useUpdateMarginPadding"; // Update the path as necessary
+
+interface dataConfig {
+  id: number;
+  componentId: number;
+  borderId: string;
+  layoutId: string;
+  effectId: string;
+  marginPaddingId: string;
+  positionId: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+}
+
+// Add the SpacingConfig interface to the props
+interface PaddingMarginConfigProps {
+  data: dataConfig; // Use the SpacingConfig interface for the data prop
+}
 
 const fontStyle = {
   fontFamily: '"Inter var", sans-serif',
 };
 
-export default function PaddingMarginConfig() {
+export default function PaddingMarginConfig({
+  data,
+}: PaddingMarginConfigProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [activeProperty, setActiveProperty] = useState<
     keyof SpacingConfig | null
   >(null);
 
-  const queryClient = useQueryClient();
+  const marginPaddingId = data.marginPaddingId;
+  const { data: spacingConfig, isLoading } = useMarginPadding(marginPaddingId);
 
-  const { data: spacingConfig, isLoading } = useMarginPadding(
-    "3125669a-d5b3-4ef0-8927-91594a8755ab"
-  );
-
-  console.log("data", spacingConfig);
-
-  const mutation = useMutation({
-    mutationFn: updateSpacingConfig,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["spacingConfig"] });
-    },
-  });
+  const mutation = useUpdateMarginPadding(); // Use the custom hook
 
   const handlePopoverOpen = useCallback(
     (
@@ -51,7 +61,8 @@ export default function PaddingMarginConfig() {
     (value: string) => {
       if (activeProperty && spacingConfig) {
         const newConfig = { ...spacingConfig, [activeProperty]: value };
-        mutation.mutate(newConfig);
+        console.log("newConfig", newConfig);
+        mutation.mutate({ newConfig, marginPaddingId });
       }
     },
     [activeProperty, spacingConfig, mutation]

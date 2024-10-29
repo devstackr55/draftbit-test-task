@@ -15,7 +15,7 @@ const PropertiesPanel: React.FC = () => {
         <p>Example content goes here.</p>
       </Collapsible>
       <Collapsible title="Margins & Padding">
-        <PaddingMarginConfig />
+        <PaddingMarginConfig data={data} />
       </Collapsible>
       <Collapsible title="Size">
         <p>Size settings go here.</p>
