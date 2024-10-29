@@ -148,18 +148,3 @@ define(Component, () => {
   component.type = "container"; // Hardcoded type
   return component;
 });
-// src/config/ormconfig.ts (add this to your existing ormconfig)
-// {
-//     // ... other config
-//     "seeds": ["src/seeders/**/*{.ts,.js}"],
-//     "factories": ["src/factories/**/*{.ts,.js}"]
-// }
-
-// // package.json (add these scripts)
-// {
-//     "scripts": {
-//         "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
-//         "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
-//         "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
-//     }
-// }

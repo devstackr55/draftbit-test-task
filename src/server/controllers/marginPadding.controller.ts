@@ -51,4 +51,12 @@ export class MarginPaddingController {
     }
     return res.status(200).json(result);
   }
+
+  async layoutSettings(req: Request, res: Response) {
+    const [error, result] = await this.service.layoutSettings();
+    if (error) {
+      return res.status(404).json({ error: error.message });
+    }
+    return res.status(200).json(result);
+  }
 }

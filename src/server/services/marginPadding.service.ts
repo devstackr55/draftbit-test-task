@@ -1,12 +1,15 @@
 import { MarginPadding } from "../models/MarginPadding";
 import { DataSource } from "typeorm"; // Import DataSource
 import { marginPaddingSchema } from "../validations/marginPadding.validation";
+import { LayoutSetting } from "../models/LayoutSetting";
 
 export class MarginPaddingService {
   private repository;
+  private layoutSettingRepository; // Declare a repository for LayoutSettings
 
   constructor(private dataSource: DataSource) {
     this.repository = this.dataSource.getRepository(MarginPadding);
+    this.layoutSettingRepository = this.dataSource.getRepository(LayoutSetting); // Initialize the LayoutSetting repository
   }
 
   async create(data: any): Promise<[Error | null, any]> {
@@ -104,11 +107,11 @@ export class MarginPaddingService {
   }
 
   async findByLayoutSettingId(
-    layoutSetting: number
+    layoutSetting: any
   ): Promise<[Error | null, any]> {
     try {
       const marginPadding = await this.repository.findOne({
-        // where: { layoutSetting }, // Uncomment and use layoutSetting filter
+        where: { layoutSetting }, // Uncomment and use layoutSetting filter
         relations: ["layoutSetting"],
       });
       if (!marginPadding) {
@@ -116,6 +119,19 @@ export class MarginPaddingService {
       }
 
       return [null, marginPadding];
+    } catch (error) {
+      return [error as Error, null];
+    }
+  }
+
+  async layoutSettings(): Promise<[Error | null, any]> {
+    try {
+      const layoutSettingsData = await this.layoutSettingRepository.find();
+      if (!layoutSettingsData) {
+        return [new Error("MarginPadding not found"), null];
+      }
+
+      return [null, layoutSettingsData];
     } catch (error) {
       return [error as Error, null];
     }
