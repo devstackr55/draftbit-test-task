@@ -2,29 +2,25 @@ import { MarginPaddingController } from "../../../controllers/marginPadding.cont
 import { Router } from "express";
 
 const marginPaddingRoutes = Router();
-const controller = new MarginPaddingController();
 
-marginPaddingRoutes.post("/margin-padding", controller.create.bind(controller));
-marginPaddingRoutes.put(
-  "/margin-padding/:id",
-  controller.update.bind(controller)
-);
+// Define routes without using .bind()
+marginPaddingRoutes.post("/margin-padding", MarginPaddingController.create);
+marginPaddingRoutes.put("/margin-padding/:id", MarginPaddingController.update);
 marginPaddingRoutes.get(
   "/margin-padding/:id",
-  controller.findById.bind(controller)
+  MarginPaddingController.findById
 );
 marginPaddingRoutes.delete(
   "/margin-padding/:id",
-  controller.delete.bind(controller)
+  MarginPaddingController.delete
 );
 marginPaddingRoutes.get(
   "/layout-setting/:layoutSettingId/margin-padding",
-  controller.findByLayoutSettingId.bind(controller)
+  MarginPaddingController.findByLayoutSettingId
 );
-
 marginPaddingRoutes.get(
   "/layout-settings/",
-  controller.layoutSettings.bind(controller)
+  MarginPaddingController.layoutSettings
 );
 
 export default marginPaddingRoutes;

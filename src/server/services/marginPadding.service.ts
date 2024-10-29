@@ -1,18 +1,17 @@
+import { DataSource, EntityManager } from "typeorm"; // Import DataSource and EntityManager
 import { MarginPadding } from "../models/MarginPadding";
-import { DataSource } from "typeorm"; // Import DataSource
 import { marginPaddingSchema } from "../validations/marginPadding.validation";
 import { LayoutSetting } from "../models/LayoutSetting";
+import { AppDataSource } from "../data-source";
 
 export class MarginPaddingService {
-  private repository;
-  private layoutSettingRepository; // Declare a repository for LayoutSettings
+  static entityManager: EntityManager;
 
-  constructor(private dataSource: DataSource) {
-    this.repository = this.dataSource.getRepository(MarginPadding);
-    this.layoutSettingRepository = this.dataSource.getRepository(LayoutSetting); // Initialize the LayoutSetting repository
+  static initialize(dataSource: DataSource) {
+    this.entityManager = dataSource.manager; // Initialize the static EntityManager
   }
 
-  async create(data: any): Promise<[Error | null, any]> {
+  static async create(data: any): Promise<[Error | null, any]> {
     try {
       // Validate input
       const { error, value } = marginPaddingSchema.create.validate(data);
@@ -21,7 +20,7 @@ export class MarginPaddingService {
       }
 
       // Check if layoutSetting exists and has no marginPadding
-      const existing = await this.repository.findOne({
+      const existing = await this.entityManager.findOne(MarginPadding, {
         where: { layoutSetting: value.layoutSettingId },
       });
       if (existing) {
@@ -32,15 +31,18 @@ export class MarginPaddingService {
       }
 
       // Create new marginPadding
-      const marginPadding = this.repository.create(value);
-      const result = await this.repository.save(marginPadding);
+      const marginPadding = this.entityManager.create(MarginPadding, value);
+      const result = await this.entityManager.save(
+        MarginPadding,
+        marginPadding
+      );
       return [null, result];
     } catch (error) {
       return [error as Error, null];
     }
   }
 
-  async update(id: string, data: any): Promise<[Error | null, any]> {
+  static async update(id: string, data: any): Promise<[Error | null, any]> {
     try {
       // Validate input
       const { error, value } = marginPaddingSchema.update.validate(data);
@@ -49,20 +51,22 @@ export class MarginPaddingService {
       }
 
       // Check if exists
-      const existing = await this.repository.findOne({ where: { id } });
+      const existing = await this.entityManager.findOne(MarginPadding, {
+        where: { id },
+      });
       if (!existing) {
         return [new Error("MarginPadding not found"), null];
       }
 
       // Update marginPadding
-      await this.repository.update(id, value);
+      await this.entityManager.update(MarginPadding, id, value);
       return [null, existing]; // Return the updated entity or similar
     } catch (error) {
       return [error as Error, null];
     }
   }
 
-  async findById(id: string): Promise<[Error | null, any]> {
+  static async findById(id: string): Promise<[Error | null, any]> {
     try {
       // Validate input
       const { error } = marginPaddingSchema.findById.validate({ id });
@@ -70,7 +74,7 @@ export class MarginPaddingService {
         return [new Error(error.details[0].message), null];
       }
 
-      const marginPadding = await this.repository.findOne({
+      const marginPadding = await this.entityManager.findOne(MarginPadding, {
         where: { id },
         relations: ["layoutSetting"],
       });
@@ -84,7 +88,7 @@ export class MarginPaddingService {
     }
   }
 
-  async delete(id: string): Promise<[Error | null, boolean]> {
+  static async delete(id: string): Promise<[Error | null, boolean]> {
     try {
       // Validate input
       const { error } = marginPaddingSchema.delete.validate({ id });
@@ -93,25 +97,27 @@ export class MarginPaddingService {
       }
 
       // Check if exists
-      const existing = await this.repository.findOne({ where: { id } });
+      const existing = await this.entityManager.findOne(MarginPadding, {
+        where: { id },
+      });
       if (!existing) {
         return [new Error("MarginPadding not found"), false];
       }
 
       // Delete marginPadding
-      await this.repository.delete(id);
+      await this.entityManager.delete(MarginPadding, id);
       return [null, true];
     } catch (error) {
       return [error as Error, false];
     }
   }
 
-  async findByLayoutSettingId(
-    layoutSetting: any
+  static async findByLayoutSettingId(
+    layoutSettingId: any
   ): Promise<[Error | null, any]> {
     try {
-      const marginPadding = await this.repository.findOne({
-        where: { layoutSetting }, // Uncomment and use layoutSetting filter
+      const marginPadding = await this.entityManager.findOne(MarginPadding, {
+        where: { layoutSetting: layoutSettingId }, // Use layoutSettingId filter
         relations: ["layoutSetting"],
       });
       if (!marginPadding) {
@@ -124,9 +130,9 @@ export class MarginPaddingService {
     }
   }
 
-  async layoutSettings(): Promise<[Error | null, any]> {
+  static async layoutSettings(): Promise<[Error | null, any]> {
     try {
-      const layoutSettingsData = await this.layoutSettingRepository.find({
+      const layoutSettingsData = await this.entityManager.find(LayoutSetting, {
         relations: [
           "border",
           "layout",
@@ -136,30 +142,20 @@ export class MarginPaddingService {
           "component",
         ],
       });
+      console.log("layoutSettingsData", layoutSettingsData);
 
       if (!layoutSettingsData || layoutSettingsData.length === 0) {
         return [new Error("LayoutSetting not found"), null];
       }
 
-      // Currently, we are returning only the first layout setting for simplicity.
-      // To return all layout settings, modify this to return `layoutSettingsData` instead of `layoutSetting`.
-      const layoutSetting = layoutSettingsData[0];
-
-      const formattedData = {
-        id: layoutSetting.id,
-        componentId: layoutSetting.component?.id || null,
-        borderId: layoutSetting.border?.id || null,
-        layoutId: layoutSetting.layout?.id || null,
-        effectId: layoutSetting.effect?.id || null,
-        marginPaddingId: layoutSetting.marginPadding?.id || null,
-        positionId: layoutSetting.position?.id || null,
-        createdAt: layoutSetting.createdAt,
-        updatedAt: layoutSetting.updatedAt,
-      };
-
-      return [null, formattedData];
+      // Return all layout settings
+      return [null, layoutSettingsData];
     } catch (error) {
       return [error as Error, null];
     }
   }
 }
+
+// Usage example:
+// Initialize the service with the DataSource before calling static methods
+MarginPaddingService.initialize(AppDataSource);

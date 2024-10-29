@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import api from "utils/api";
+import api from "../utils/api";
 
 // Define a fetch function for the layout settings
 const fetchLayoutSettings = async () => {

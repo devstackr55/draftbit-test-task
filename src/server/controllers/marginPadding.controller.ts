@@ -1,50 +1,45 @@
 import { Request, Response } from "express";
 import { MarginPaddingService } from "../services/marginPadding.service";
-import { AppDataSource } from "../data-source";
 
 export class MarginPaddingController {
-  private service: MarginPaddingService;
-
-  constructor() {
-    // Initialize the service with the AppDataSource
-    this.service = new MarginPaddingService(AppDataSource);
-  }
-
-  async create(req: Request, res: Response) {
-    const [error, result] = await this.service.create(req.body);
+  static async create(req: Request, res: Response) {
+    const [error, result] = await MarginPaddingService.create(req.body);
     if (error) {
       return res.status(400).json({ error: error.message });
     }
     return res.status(201).json(result);
   }
 
-  async update(req: Request, res: Response) {
-    const [error, result] = await this.service.update(req.params.id, req.body);
+  static async update(req: Request, res: Response) {
+    const [error, result] = await MarginPaddingService.update(
+      req.params.id,
+      req.body
+    );
     if (error) {
       return res.status(400).json({ error: error.message });
     }
     return res.status(200).json(result);
   }
 
-  async findById(req: Request, res: Response) {
-    const [error, result] = await this.service.findById(req.params.id);
+  static async findById(req: Request, res: Response) {
+    const [error, result] = await MarginPaddingService.findById(req.params.id);
     if (error) {
       return res.status(404).json({ error: error.message });
     }
     return res.status(200).json(result);
   }
 
-  async delete(req: Request, res: Response) {
-    const [error, result] = await this.service.delete(req.params.id);
+  static async delete(req: Request, res: Response) {
+    const [error, success] = await MarginPaddingService.delete(req.params.id);
     if (error) {
       return res.status(404).json({ error: error.message });
     }
-    return res.status(204).send();
+    return res.status(204).send(); // No content for successful delete
   }
 
-  async findByLayoutSettingId(req: Request, res: Response) {
-    const [error, result] = await this.service.findByLayoutSettingId(
-      Number(req.params.layoutSettingId)
+  static async findByLayoutSettingId(req: Request, res: Response) {
+    const [error, result] = await MarginPaddingService.findByLayoutSettingId(
+      req.params.layoutSettingId
     );
     if (error) {
       return res.status(404).json({ error: error.message });
@@ -52,8 +47,9 @@ export class MarginPaddingController {
     return res.status(200).json(result);
   }
 
-  async layoutSettings(req: Request, res: Response) {
-    const [error, result] = await this.service.layoutSettings();
+  static async layoutSettings(req: Request, res: Response) {
+    console.log("runn");
+    const [error, result] = await MarginPaddingService.layoutSettings();
     if (error) {
       return res.status(404).json({ error: error.message });
     }
