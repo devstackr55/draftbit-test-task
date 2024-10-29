@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { getSpacingConfig, SpacingConfig, updateSpacingConfig } from "../utils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import MarginPopover from "./Popover";
-import { useMarginPadding } from "../hooks/useMarginPadding"; // Adjust the import path as needed
-import { useUpdateMarginPadding } from "../hooks/useUpdateMarginPadding"; // Update the path as necessary
+import { useMarginPadding } from "../hooks/useMarginPadding";
+import { useUpdateMarginPadding } from "../hooks/useUpdateMarginPadding";
 
 interface dataConfig {
   id: number;
@@ -17,7 +16,6 @@ interface dataConfig {
   updatedAt: string; // ISO date string
 }
 
-// Add the SpacingConfig interface to the props
 interface PaddingMarginConfigProps {
   data: dataConfig; // Use the SpacingConfig interface for the data prop
 }
@@ -29,6 +27,8 @@ const fontStyle = {
 export default function PaddingMarginConfig({
   data,
 }: PaddingMarginConfigProps) {
+  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [unit, setUnit] = useState(""); // State for selected unit
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [activeProperty, setActiveProperty] = useState<
@@ -38,23 +38,23 @@ export default function PaddingMarginConfig({
   const marginPaddingId = data.marginPaddingId;
   const { data: spacingConfig, isLoading } = useMarginPadding(marginPaddingId);
 
-  const mutation = useUpdateMarginPadding(); // Use the custom hook
-
+  const mutation = useUpdateMarginPadding();
   const handlePopoverOpen = useCallback(
     (
       event: React.MouseEvent<HTMLButtonElement>,
       property: keyof SpacingConfig
     ) => {
+      const baseProperty = property?.replace(/Value$/, "Unit"); // e.g., marginTopValue -> marginTop
+      console.log(spacingConfig?.data);
+      setUnit(spacingConfig?.data[baseProperty]);
       setAnchorEl(event.currentTarget);
       setActiveProperty(property);
       setIsPopoverOpen(true);
     },
-    []
+    [spacingConfig]
   );
-  const [selectedValue, setSelectedValue] = useState<string>("");
 
   const handlePopoverClose = useCallback(() => {
-    console.log(activeProperty, spacingConfig, selectedValue);
     if (activeProperty && spacingConfig && selectedValue) {
       const newConfig = {
         ...spacingConfig.data,
@@ -70,6 +70,20 @@ export default function PaddingMarginConfig({
   const handleValueChange = useCallback((value: any) => {
     setSelectedValue(value);
   }, []);
+
+  const handleUnitChange = (newUnit: string) => {
+    const baseProperty = activeProperty?.replace(/Value$/, "Unit"); // e.g., marginTopValue -> marginTop
+    setUnit(newUnit);
+    if (newUnit && baseProperty) {
+      const newConfig = {
+        ...spacingConfig.data,
+        [baseProperty]: newUnit,
+      };
+      delete newConfig.id;
+      delete newConfig.layoutSetting;
+      mutation.mutate({ newConfig, marginPaddingId });
+    }
+  };
 
   const SpacingButton: React.FC<{
     value?: string;
@@ -194,8 +208,10 @@ export default function PaddingMarginConfig({
             onClose={handlePopoverClose}
             anchorEl={anchorEl}
             property={activeProperty}
-            value={spacingConfig[activeProperty]}
+            value={spacingConfig.data[activeProperty]}
             onChange={handleValueChange}
+            handleUnitChange={handleUnitChange}
+            unit={unit}
           />
         )}
       </div>

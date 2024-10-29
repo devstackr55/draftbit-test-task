@@ -1,28 +1,31 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../utils/api";
-
-// Define the type for the SpacingConfig if you haven't already
+import { useToast } from "../context/ToastContext";
 
 const updateMarginPadding = async (data: any) => {
   console.log(data);
-  const marginPaddingId = data.marginPaddingId; // Extract the ID from the newConfig
+  const { marginPaddingId, newConfig } = data;
   const response = await api.put(
     `margin-padding/${marginPaddingId}`,
-    data.newConfig
+    newConfig
   );
-  return response.data; // Return the updated data
+  return response.data;
 };
 
-// Create the custom hook
 export const useUpdateMarginPadding = () => {
   const queryClient = useQueryClient();
+  const { success, error } = useToast();
 
   return useMutation({
     mutationFn: updateMarginPadding,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["marginPadding"],
-      }); // Invalidate queries after a successful update
+      success("Margin padding updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["marginPadding"] }); // Invalidate queries after a successful update
+    },
+    onError: (err: any) => {
+      error(
+        `Failed to update margin padding: ${err.message || "Unknown error"}`
+      ); // Error message
     },
   });
 };

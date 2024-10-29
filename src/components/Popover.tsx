@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { ChevronDown, Smartphone } from "lucide-react";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { SpacingConfig } from "../utils";
@@ -10,7 +10,18 @@ const MarginPopover: React.FC<{
   property: keyof SpacingConfig;
   value: string;
   onChange: (value: string) => void;
-}> = ({ isOpen, onClose, anchorEl, property, value, onChange }) => {
+  handleUnitChange: (value: string) => void;
+  unit: string;
+}> = ({
+  isOpen,
+  onClose,
+  anchorEl,
+  property,
+  value,
+  onChange,
+  handleUnitChange,
+  unit,
+}) => {
   const popoverRef = useRef<HTMLDivElement>(null);
   useClickOutside(popoverRef, onClose);
 
@@ -80,9 +91,13 @@ const MarginPopover: React.FC<{
               onChange={(e) => onChange(e.target.value || "auto")}
               placeholder="auto"
             />
-            <select className="bg-slate-800 text-[rgb(248,250,252)] px-3 py-1.5 rounded focus:ring-2 focus:ring-blue-500 outline-none">
-              <option>pt</option>
-              <option>%</option>
+            <select
+              className="bg-slate-800 text-[rgb(248,250,252)] px-3 py-1.5 rounded focus:ring-2 focus:ring-blue-500 outline-none"
+              value={unit}
+              onChange={(e) => handleUnitChange(e.target.value)} // Update unit state on change
+            >
+              <option value="pt">pt</option>
+              <option value="%">%</option>
             </select>
           </div>
         </div>
