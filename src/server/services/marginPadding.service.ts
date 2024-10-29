@@ -126,12 +126,38 @@ export class MarginPaddingService {
 
   async layoutSettings(): Promise<[Error | null, any]> {
     try {
-      const layoutSettingsData = await this.layoutSettingRepository.find();
-      if (!layoutSettingsData) {
-        return [new Error("MarginPadding not found"), null];
+      const layoutSettingsData = await this.layoutSettingRepository.find({
+        relations: [
+          "border",
+          "layout",
+          "effect",
+          "marginPadding",
+          "position",
+          "component",
+        ],
+      });
+
+      if (!layoutSettingsData || layoutSettingsData.length === 0) {
+        return [new Error("LayoutSetting not found"), null];
       }
 
-      return [null, layoutSettingsData];
+      // Currently, we are returning only the first layout setting for simplicity.
+      // To return all layout settings, modify this to return `layoutSettingsData` instead of `layoutSetting`.
+      const layoutSetting = layoutSettingsData[0];
+
+      const formattedData = {
+        id: layoutSetting.id,
+        componentId: layoutSetting.component?.id || null,
+        borderId: layoutSetting.border?.id || null,
+        layoutId: layoutSetting.layout?.id || null,
+        effectId: layoutSetting.effect?.id || null,
+        marginPaddingId: layoutSetting.marginPadding?.id || null,
+        positionId: layoutSetting.position?.id || null,
+        createdAt: layoutSetting.createdAt,
+        updatedAt: layoutSetting.updatedAt,
+      };
+
+      return [null, formattedData];
     } catch (error) {
       return [error as Error, null];
     }

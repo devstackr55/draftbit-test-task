@@ -23,7 +23,7 @@ marginPaddingRoutes.get(
 );
 
 marginPaddingRoutes.get(
-  "/layout-setting/",
+  "/layout-settings/",
   controller.layoutSettings.bind(controller)
 );
 

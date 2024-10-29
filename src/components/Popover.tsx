@@ -1,7 +1,7 @@
+import React, { useRef } from "react";
 import { ChevronDown, Smartphone } from "lucide-react";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { SpacingConfig } from "../utils";
-import { useRef } from "react";
 
 const MarginPopover: React.FC<{
   isOpen: boolean;

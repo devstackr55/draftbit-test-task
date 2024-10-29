@@ -1,8 +1,14 @@
 import React from "react";
 import Collapsible from "./Collapsible";
 import PaddingMarginConfig from "./PaddingMarginInterface";
+import { useLayoutSettings } from "../hooks/useLayoutSettings";
 
 const PropertiesPanel: React.FC = () => {
+  const { data, isLoading, error } = useLayoutSettings();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <aside className="PropertiesPanel">
       <Collapsible title="Load examples">
