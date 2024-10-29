@@ -19,8 +19,8 @@
     "jsx": "react-jsx",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": "./src/server"
-    // "baseUrl": "src"
+    // "baseUrl": "./src/server"
+    "baseUrl": "src"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

@@ -12,6 +12,7 @@ const MarginPopover: React.FC<{
   onChange: (value: string) => void;
   handleUnitChange: (value: string) => void;
   unit: string;
+  handleReset: () => void;
 }> = ({
   isOpen,
   onClose,
@@ -21,6 +22,7 @@ const MarginPopover: React.FC<{
   onChange,
   handleUnitChange,
   unit,
+  handleReset,
 }) => {
   const popoverRef = useRef<HTMLDivElement>(null);
   useClickOutside(popoverRef, onClose);
@@ -128,6 +130,7 @@ const MarginPopover: React.FC<{
           configure a static style, it will be used as a fallback if the data
           evaluates to undefined.
         </p>
+        <button onClick={() => handleReset()}>Reset style</button>
       </div>
     </div>
   );

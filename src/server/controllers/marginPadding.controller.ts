@@ -18,8 +18,6 @@ export class MarginPaddingController {
   }
 
   static async updateMarginPadding(req: Request, res: Response) {
-    console.log("handellllllll", req.body);
-
     const updateData = {
       data: req.body,
       id: req.params.id,
