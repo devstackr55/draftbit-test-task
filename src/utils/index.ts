@@ -1,14 +1,14 @@
 import api from "./api";
 
 export interface SpacingConfig {
-  paddingTop: string;
-  paddingRight: string;
-  paddingBottom: string;
-  paddingLeft: string;
-  marginTop: string;
-  marginRight: string;
-  marginBottom: string;
-  marginLeft: string;
+  paddingTopValue: string;
+  paddingRightValue: string;
+  paddingBottomValue: string;
+  paddingLeftValue: string;
+  marginTopValue: string;
+  marginRightValue: string;
+  marginBottomValue: string;
+  marginLeftValue: string;
 }
 
 export const getSpacingConfig = async (): Promise<SpacingConfig> => {

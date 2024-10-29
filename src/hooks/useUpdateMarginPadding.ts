@@ -3,11 +3,12 @@ import api from "../utils/api";
 
 // Define the type for the SpacingConfig if you haven't already
 
-const updateMarginPadding = async (newConfig: any) => {
-  const marginPaddingId = newConfig.marginPaddingId; // Extract the ID from the newConfig
+const updateMarginPadding = async (data: any) => {
+  console.log(data);
+  const marginPaddingId = data.marginPaddingId; // Extract the ID from the newConfig
   const response = await api.put(
     `margin-padding/${marginPaddingId}`,
-    newConfig
+    data.newConfig
   );
   return response.data; // Return the updated data
 };

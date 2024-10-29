@@ -51,22 +51,25 @@ export default function PaddingMarginConfig({
     },
     []
   );
+  const [selectedValue, setSelectedValue] = useState<string>("");
 
   const handlePopoverClose = useCallback(() => {
+    console.log(activeProperty, spacingConfig, selectedValue);
+    if (activeProperty && spacingConfig && selectedValue) {
+      const newConfig = {
+        ...spacingConfig.data,
+        [activeProperty]: selectedValue,
+      };
+      delete newConfig.id;
+      delete newConfig.layoutSetting;
+      mutation.mutate({ newConfig, marginPaddingId });
+    }
     setIsPopoverOpen(false);
-    setActiveProperty(null);
-  }, []);
+  }, [activeProperty, spacingConfig, selectedValue, mutation, marginPaddingId]);
 
-  const handleValueChange = useCallback(
-    (value: string) => {
-      if (activeProperty && spacingConfig) {
-        const newConfig = { ...spacingConfig, [activeProperty]: value };
-        console.log("newConfig", newConfig);
-        mutation.mutate({ newConfig, marginPaddingId });
-      }
-    },
-    [activeProperty, spacingConfig, mutation]
-  );
+  const handleValueChange = useCallback((value: any) => {
+    setSelectedValue(value);
+  }, []);
 
   const SpacingButton: React.FC<{
     value?: string;
@@ -102,15 +105,15 @@ export default function PaddingMarginConfig({
       <div className="relative flex flex-col items-center gap-2">
         {/* Top margin */}
         <SpacingButton
-          value={spacingConfig?.marginTopValue}
-          onClick={(e) => handlePopoverOpen(e, "marginTop")}
+          value={spacingConfig?.data.marginTopValue}
+          onClick={(e) => handlePopoverOpen(e, "marginTopValue")}
         />
 
         <div className="flex items-center gap-2">
           {/* Left margin */}
           <SpacingButton
-            value={spacingConfig?.marginLeftValue}
-            onClick={(e) => handlePopoverOpen(e, "marginLeft")}
+            value={spacingConfig?.data?.marginLeftValue}
+            onClick={(e) => handlePopoverOpen(e, "marginLeftValue")}
           />
 
           {/* Padding container */}
@@ -132,8 +135,8 @@ export default function PaddingMarginConfig({
               style={{ top: "1rem" }}
             >
               <SpacingButton
-                value={spacingConfig?.paddingTopValue}
-                onClick={(e) => handlePopoverOpen(e, "paddingTop")}
+                value={spacingConfig?.data.paddingTopValue}
+                onClick={(e) => handlePopoverOpen(e, "paddingTopValue")}
               />
             </div>
 
@@ -143,8 +146,8 @@ export default function PaddingMarginConfig({
               style={{ left: "1rem" }}
             >
               <SpacingButton
-                value={spacingConfig?.paddingLeftValue}
-                onClick={(e) => handlePopoverOpen(e, "paddingLeft")}
+                value={spacingConfig?.data.paddingLeftValue}
+                onClick={(e) => handlePopoverOpen(e, "paddingLeftValue")}
               />
             </div>
 
@@ -154,9 +157,9 @@ export default function PaddingMarginConfig({
               style={{ right: "1rem" }}
             >
               <SpacingButton
-                value={spacingConfig?.paddingRightValue}
+                value={spacingConfig?.data.paddingRightValue}
                 isActive={true}
-                onClick={(e) => handlePopoverOpen(e, "paddingRight")}
+                onClick={(e) => handlePopoverOpen(e, "paddingRightValue")}
               />
             </div>
 
@@ -166,23 +169,23 @@ export default function PaddingMarginConfig({
               style={{ bottom: "1rem" }}
             >
               <SpacingButton
-                value={spacingConfig?.paddingBottomValue}
-                onClick={(e) => handlePopoverOpen(e, "paddingBottom")}
+                value={spacingConfig?.data.paddingBottomValue}
+                onClick={(e) => handlePopoverOpen(e, "paddingBottomValue")}
               />
             </div>
           </div>
 
           {/* Right margin */}
           <SpacingButton
-            value={spacingConfig?.marginRightValue}
-            onClick={(e) => handlePopoverOpen(e, "marginRight")}
+            value={spacingConfig?.data.marginRightValue}
+            onClick={(e) => handlePopoverOpen(e, "marginRightValue")}
           />
         </div>
 
         {/* Bottom margin */}
         <SpacingButton
-          value={spacingConfig?.marginBottomValue}
-          onClick={(e) => handlePopoverOpen(e, "marginBottom")}
+          value={spacingConfig?.data.marginBottomValue}
+          onClick={(e) => handlePopoverOpen(e, "marginBottomValue")}
         />
 
         {activeProperty && (

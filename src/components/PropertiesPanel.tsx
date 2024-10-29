@@ -4,7 +4,7 @@ import PaddingMarginConfig from "./PaddingMarginInterface";
 import { useLayoutSettings } from "../hooks/useLayoutSettings";
 
 const PropertiesPanel: React.FC = () => {
-  const { data, isLoading, error } = useLayoutSettings();
+  const { data: layoutRes, isLoading, error } = useLayoutSettings();
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -15,7 +15,7 @@ const PropertiesPanel: React.FC = () => {
         <p>Example content goes here.</p>
       </Collapsible>
       <Collapsible title="Margins & Padding">
-        <PaddingMarginConfig data={data} />
+        <PaddingMarginConfig data={layoutRes.data} />
       </Collapsible>
       <Collapsible title="Size">
         <p>Size settings go here.</p>

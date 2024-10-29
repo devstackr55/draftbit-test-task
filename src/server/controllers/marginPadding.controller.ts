@@ -17,9 +17,11 @@ export class MarginPaddingController {
     });
   }
 
-  static async updateMarginPaddin(req: Request, res: Response) {
+  static async updateMarginPadding(req: Request, res: Response) {
+    console.log("handellllllll", req.body);
+
     const updateData = {
-      data: req.body.name,
+      data: req.body,
       id: req.params.id,
     };
     return responseHandler({

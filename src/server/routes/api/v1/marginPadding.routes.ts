@@ -5,16 +5,22 @@ import { Router } from "express";
 const marginPaddingRoutes = Router();
 
 // Define routes without using .bind()
-// marginPaddingRoutes.post("/margin-padding", MarginPaddingController.create);
-// marginPaddingRoutes.put("/margin-padding/:id", MarginPaddingController.update);
+marginPaddingRoutes.post(
+  "/margin-padding",
+  MarginPaddingController.createNewMarginPadding
+);
+marginPaddingRoutes.put(
+  "/margin-padding/:id",
+  MarginPaddingController.updateMarginPadding
+);
 marginPaddingRoutes.get(
   "/margin-padding/:id",
   MarginPaddingController.GetMarginPadding
 );
-// marginPaddingRoutes.delete(
-//   "/margin-padding/:id",
-//   MarginPaddingController.delete
-// );
+marginPaddingRoutes.delete(
+  "/margin-padding/:id",
+  MarginPaddingController.resetmarginPadding
+);
 // marginPaddingRoutes.get(
 //   "/layout-setting/:layoutSettingId/margin-padding",
 //   MarginPaddingController.findByLayoutSettingId
