@@ -49,9 +49,8 @@
     "backend:build-docker": "docker build -t code-challenge .",
     "backend:psql": "psql postgres://$(dotenv -p PGUSER):$(dotenv -p PGPASSWORD)@$(dotenv -p PGHOST):$(dotenv -p PGPORT)/$(dotenv -p PGDATABASE)",
     "backend:db": "yarn backend:build-docker && docker run --rm --name draftbit-challenge -e POSTGRES_PASSWORD=$(dotenv -p PGPASSWORD) -p $(dotenv -p PGPORT):5432 code-challenge",
-    "seed": "ts-node src/server/seed/index.ts",
+    "seed:run": "ts-node src/server/seed/index.ts",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
-    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
     "migration:run": "yarn run typeorm -- migration:run -d src/server/data-source.ts",
     "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n <migration-name>",
     "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"

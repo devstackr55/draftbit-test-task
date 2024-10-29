@@ -18,42 +18,36 @@ const config = convict({
     default: "development",
     env: "NODE_ENV",
   },
-  jwt: {
-    doc: "JWT secret Key",
-    format: String,
-    default: "abcgsggsggs",
-    env: "JWT_SECRET",
-  },
   database: {
     host: {
       doc: "Database host name/IP",
       format: String,
       default: "localhost",
-      env: "POSTGRES_HOST",
+      env: "PGHOST",
     },
     port: {
       doc: "Database port",
       format: "port",
       default: 5432,
-      env: "POSTGRES_PORT",
+      env: "PGPORT",
     },
     name: {
       doc: "Database name",
       format: String,
       default: "mydatabase",
-      env: "POSTGRES_DB",
+      env: "PGDATABASE",
     },
     username: {
       doc: "Database username",
       format: String,
       default: "user",
-      env: "POSTGRES_USERNAME",
+      env: "PGUSER",
     },
     password: {
       doc: "Database password",
       format: String,
       default: "password",
-      env: "POSTGRES_PASSWORD",
+      env: "PGPASSWORD",
     },
   },
 });
@@ -66,5 +60,3 @@ config.loadFile(`./src/server/config/${env}.json`);
 config.validate({ allowed: "strict" });
 
 export default config;
-
-//
