@@ -8,7 +8,7 @@ const updateMarginPadding = async (data: any) => {
   console.log(data);
   const { marginPaddingId, newConfig } = data;
   const response = await api.put(
-    `margin-padding/${marginPaddingId}`,
+    `margin-paddings/${marginPaddingId}`,
     newConfig
   );
   return response.data;
@@ -22,7 +22,7 @@ export const useUpdateMarginPadding = () => {
     mutationFn: updateMarginPadding,
     onSuccess: () => {
       success("Margin padding updated successfully!");
-      queryClient.invalidateQueries({ queryKey: ["marginPadding"] }); // Invalidate queries after a successful update
+      queryClient.invalidateQueries({ queryKey: ["marginPaddings"] }); 
     },
     onError: (err: any) => {
       error(

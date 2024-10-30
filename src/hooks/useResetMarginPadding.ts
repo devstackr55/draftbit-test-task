@@ -4,7 +4,7 @@
 // const resetMarginPadding = async (data: any) => {
 //   const id = data.marginPaddingId;
 //   const config = data.newConfig;
-//   const response = await api.put(`margin-padding/${id}`, { config }); // Adjust API endpoint as necessary
+//   const response = await api.put(`margin-paddings/${id}`, { config }); // Adjust API endpoint as necessary
 //   return response.data; // Return the response data if needed
 // };
 
@@ -16,7 +16,7 @@
 //     mutationFn: resetMarginPadding,
 //     onSuccess: () => {
 //       // handleSuccess();
-//       queryClient.invalidateQueries({ queryKey: ["marginPadding"] }); // Invalidate queries to refresh data
+//       queryClient.invalidateQueries({ queryKey: ["marginPaddings"] }); // Invalidate queries to refresh data
 //     },
 //     onError: () => {
 //       // handleError();

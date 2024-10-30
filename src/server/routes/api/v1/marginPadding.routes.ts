@@ -6,19 +6,22 @@ import { Router } from "express";
 const marginPaddingRoutes = Router();
 
 marginPaddingRoutes.post(
-  "/margin-padding",
+  "/",
   MarginPaddingController.createNewMarginPadding
 );
+
 marginPaddingRoutes.put(
-  "/margin-padding/:id",
+  "/:id",
   MarginPaddingController.updateMarginPadding
 );
+
 marginPaddingRoutes.get(
-  "/margin-padding/:id",
+  "/:id",
   MarginPaddingController.GetMarginPadding
 );
+
 marginPaddingRoutes.delete(
-  "/margin-padding/:id",
+  "/:id",
   MarginPaddingController.resetmarginPadding
 );
 
