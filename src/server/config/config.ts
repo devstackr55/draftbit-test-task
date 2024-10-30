@@ -8,7 +8,7 @@ const config = convict({
     doc: "The port to bind.",
     format: "port",
     default: 4000,
-    env: "APP_PORT",
+    env: "BACKEND_APP_PORT",
   },
   nodeEnv: {
     doc: "The application environment.",

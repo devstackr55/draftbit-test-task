@@ -11,9 +11,11 @@ const marginPaddingSchema = {
     id: Joi.string().trim().required(),
   }),
 };
+
 interface paramsType {
   id: string;
 }
+
 class GetMarginPaddingService {
   static async run(
     params: paramsType
