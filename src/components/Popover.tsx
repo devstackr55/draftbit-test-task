@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { memo, useRef } from "react";
 
 import { ChevronDown, Smartphone } from "lucide-react";
 
@@ -32,16 +32,16 @@ const MarginPopover: React.FC<{
 
   if (!isOpen || !anchorEl) return null;
 
+  const popoverWidth = 384;
   const rect = anchorEl.getBoundingClientRect();
   const viewportHeight = window.innerHeight;
-  const shouldShowBelow = rect.bottom + 300 <= viewportHeight;
+  const shouldShowBelow = rect.bottom + popoverWidth <= viewportHeight;
+  console.log(rect);
 
   const popoverStyle = {
     position: "absolute" as const,
-    ...(shouldShowBelow
-      ? { top: `${rect.bottom + 8}px` }
-      : { bottom: `${window.innerHeight - rect.top + 8}px` }),
-    left: `${rect.left - 180}px`,
+    top: rect.bottom,
+    left: `${Math.max(rect.left + rect.width / 2 - popoverWidth / 2, 0)}px`,
     zIndex: 1000,
   };
 
@@ -93,7 +93,7 @@ const MarginPopover: React.FC<{
               type="text"
               className="bg-slate-800 text-[rgb(248,250,252)] rounded px-3 py-1.5 flex-grow focus:ring-2 focus:ring-blue-500 outline-none"
               value={value === "auto" ? "" : value}
-              onChange={(e) => onChange(e.target.value || "auto")}
+              onChange={(e) => onChange(e.target.value)}
               placeholder="auto"
             />
             <select
@@ -139,4 +139,4 @@ const MarginPopover: React.FC<{
   );
 };
 
-export default MarginPopover;
+export default memo(MarginPopover);

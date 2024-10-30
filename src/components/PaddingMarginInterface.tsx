@@ -31,7 +31,7 @@ export default function PaddingMarginConfig({
   data,
 }: PaddingMarginConfigProps) {
   const [selectedValue, setSelectedValue] = useState<string>("");
-  const [unit, setUnit] = useState(""); // State for selected unit
+  const [unit, setUnit] = useState("");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [activeProperty, setActiveProperty] = useState<
@@ -47,9 +47,10 @@ export default function PaddingMarginConfig({
       event: React.MouseEvent<HTMLButtonElement>,
       property: keyof SpacingConfig
     ) => {
-      const baseProperty = property?.replace(/Value$/, "Unit"); // e.g., marginTopValue -> marginTop
+      const baseProperty = property?.replace(/Value$/, "Unit");
       console.log(spacingConfig?.data);
       setUnit(spacingConfig?.data[baseProperty]);
+      setSelectedValue(spacingConfig?.data[property]);
       setAnchorEl(event.currentTarget);
       setActiveProperty(property);
       setIsPopoverOpen(true);
@@ -58,7 +59,11 @@ export default function PaddingMarginConfig({
   );
 
   const handlePopoverClose = useCallback(() => {
-    if (activeProperty && spacingConfig && selectedValue) {
+    if (
+      activeProperty &&
+      spacingConfig &&
+      selectedValue != spacingConfig.data[activeProperty]
+    ) {
       const newConfig = {
         ...spacingConfig.data,
         [activeProperty]: selectedValue,
@@ -71,9 +76,9 @@ export default function PaddingMarginConfig({
     setSelectedValue("");
   }, [activeProperty, spacingConfig, selectedValue, mutation, marginPaddingId]);
 
-  const handleValueChange = useCallback((value: any) => {
+  const handleValueChange = (value: string) => {
     setSelectedValue(value);
-  }, []);
+  };
 
   const handleUnitChange = (newUnit: string) => {
     const baseProperty = activeProperty?.replace(/Value$/, "Unit"); // e.g., marginTopValue -> marginTop
@@ -134,7 +139,7 @@ export default function PaddingMarginConfig({
     <div className="bg-slate-900 p-8 rounded-lg" style={fontStyle}>
       <div className="text-blue-400 text-sm mb-4">INDIVIDUAL</div>
 
-      <div className="flex flex-col items-center gap-2">
+      <div className=" flex flex-col items-center gap-2">
         {/* Top margin */}
         <SpacingButton
           value={
@@ -258,7 +263,7 @@ export default function PaddingMarginConfig({
             onClose={handlePopoverClose}
             anchorEl={anchorEl}
             property={activeProperty}
-            value={spacingConfig.data[activeProperty]}
+            value={selectedValue}
             onChange={handleValueChange}
             handleUnitChange={handleUnitChange}
             unit={unit}

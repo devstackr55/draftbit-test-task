@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <QueryClientProvider client={queryClient}>
-        <div className="flex">
+        <div className="flex w-full">
           <PropertiesPanel />
           <div
             className="flex justify-center w-full items-center

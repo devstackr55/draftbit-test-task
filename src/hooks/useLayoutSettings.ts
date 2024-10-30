@@ -21,7 +21,9 @@ export const useLayoutSettings = () => {
     },
     onError: (err: any) => {
       error(
-        `Failed to fetch layout settings: ${err.message || "Unknown error"}`
+        `Failed to fetch layout settings: ${
+          err.response?.data?.message || "Unknown error"
+        }`
       );
     },
   });

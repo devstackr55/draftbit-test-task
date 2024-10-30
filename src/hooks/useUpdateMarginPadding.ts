@@ -26,7 +26,9 @@ export const useUpdateMarginPadding = () => {
     },
     onError: (err: any) => {
       error(
-        `Failed to update margin padding: ${err.message || "Unknown error"}`
+        `Failed to update margin padding: ${
+          err.response?.data?.message || "Unknown error"
+        }`
       );
     },
   });
