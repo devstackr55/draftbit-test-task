@@ -112,7 +112,7 @@ export default function PaddingMarginConfig({
           ? "bg-orange-500 text-white"
           : "bg-slate-800 text-[rgb(248,250,252)] hover:bg-slate-700"
       }`}
-      style={{ width: "2.5rem", fontSize: "0.75rem", ...style }}
+      style={{ width: "3.5rem", fontSize: "0.75rem", ...style }}
       onClick={onClick}
     >
       {value} {value != "auto" && unit}

@@ -16,7 +16,7 @@ export const useLayoutSettings = () => {
     queryFn: fetchLayoutSettings,
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 10,
-    onSuccess: (data) => {
+    onSuccess: () => {
       success("Layout settings fetched successfully!");
     },
     onError: (err: any) => {
