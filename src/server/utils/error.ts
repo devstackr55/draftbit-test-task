@@ -49,7 +49,7 @@ export class UniqueConstraintError extends Error {
 
   constructor(message: string) {
     super(message);
-    this.status = 409; // Typically unique constraint errors are 409 Conflict
+    this.status = 409;
     this.name = ERROR_NAMES.UNIQUE_CONSTRAINT;
   }
 }

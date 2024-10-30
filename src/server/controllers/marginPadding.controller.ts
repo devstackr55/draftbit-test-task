@@ -39,7 +39,7 @@ export class MarginPaddingController {
       response: res,
     });
   }
-  static async resetmarginPadding(req: Request, res: Response) {
+  static async resetMarginPadding(req: Request, res: Response) {
     const id = req.params.id;
     return responseHandler({
       service: ResetMarginPaddingService,

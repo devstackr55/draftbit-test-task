@@ -19,7 +19,7 @@ interface ResetMarginPaddingServiceParams {
 class ResetMarginPaddingService {
   static async run(
     params: ResetMarginPaddingServiceParams
-  ): Promise<[Error | null, boolean]> {
+  ): Promise<[Error | null, any]> {
     try {
       const { id } = params;
       const { error } = marginPaddingSchema.reset.validate({ id });
@@ -41,7 +41,7 @@ class ResetMarginPaddingService {
         // Replace these default values with the actual ones you want to reset to
       });
 
-      return [null, true];
+      return [null, { message: "Reset margin and padding" }];
     } catch (error: any) {
       return [mapErrorToErrorType(error), false];
     }

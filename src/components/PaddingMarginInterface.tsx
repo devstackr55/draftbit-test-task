@@ -102,20 +102,20 @@ export default function PaddingMarginConfig({
 
   const SpacingButton: React.FC<{
     value?: string;
-    isActive?: boolean;
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
     style?: React.CSSProperties;
-  }> = ({ value = "auto", isActive = false, onClick, style }) => (
+    unit?: string;
+  }> = ({ value = "auto", onClick, style, unit }) => (
     <button
       className={`py-1 rounded text-center ${
-        isActive
+        value != "auto"
           ? "bg-orange-500 text-white"
           : "bg-slate-800 text-[rgb(248,250,252)] hover:bg-slate-700"
       }`}
       style={{ width: "2.5rem", fontSize: "0.75rem", ...style }}
       onClick={onClick}
     >
-      {value}
+      {value} {value != "auto" && unit}
     </button>
   );
 
@@ -154,6 +154,7 @@ export default function PaddingMarginConfig({
               : "auto"
           }
           onClick={(e) => handlePopoverOpen(e, "marginTopValue")}
+          unit={spacingConfig?.data?.marginTopUnit}
         />
 
         <div className="flex items-center gap-2">
@@ -165,6 +166,7 @@ export default function PaddingMarginConfig({
                 : "auto"
             }
             onClick={(e) => handlePopoverOpen(e, "marginLeftValue")}
+            unit={spacingConfig?.data?.marginLeftUnit}
           />
 
           {/* Padding container */}
@@ -192,6 +194,7 @@ export default function PaddingMarginConfig({
                     : "auto"
                 }
                 onClick={(e) => handlePopoverOpen(e, "paddingTopValue")}
+                unit={spacingConfig?.data?.paddingTopUnit}
               />
             </div>
 
@@ -207,6 +210,7 @@ export default function PaddingMarginConfig({
                     : "auto"
                 }
                 onClick={(e) => handlePopoverOpen(e, "paddingLeftValue")}
+                unit={spacingConfig?.data?.paddingLeftUnit}
               />
             </div>
 
@@ -223,6 +227,7 @@ export default function PaddingMarginConfig({
                 }
                 // isActive={true}
                 onClick={(e) => handlePopoverOpen(e, "paddingRightValue")}
+                unit={spacingConfig?.data?.paddingRightUnit}
               />
             </div>
 
@@ -238,6 +243,7 @@ export default function PaddingMarginConfig({
                     : "auto"
                 }
                 onClick={(e) => handlePopoverOpen(e, "paddingBottomValue")}
+                unit={spacingConfig?.data?.paddingBottomUnit}
               />
             </div>
           </div>
@@ -250,6 +256,7 @@ export default function PaddingMarginConfig({
                 : "auto"
             }
             onClick={(e) => handlePopoverOpen(e, "marginRightValue")}
+            unit={spacingConfig?.data?.marginRightUnit}
           />
         </div>
 
@@ -261,6 +268,7 @@ export default function PaddingMarginConfig({
               : "auto"
           }
           onClick={(e) => handlePopoverOpen(e, "marginBottomValue")}
+          unit={spacingConfig?.data?.marginBottomUnit}
         />
 
         {activeProperty && (

@@ -21,14 +21,12 @@ export const useUpdateMarginPadding = () => {
   return useMutation({
     mutationFn: updateMarginPadding,
     onSuccess: () => {
-      success("Margin padding updated successfully!");
-      queryClient.invalidateQueries({ queryKey: ["marginPaddings"] }); 
+      success("Your settings have been updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["marginPaddings"] }); // Invalidate queries after a successful update
     },
     onError: (err: any) => {
       error(
-        `Failed to update margin padding: ${
-          err.response?.data?.message || "Unknown error"
-        }`
+        `Failed to update : ${err.response?.data?.message || "Unknown error"}`
       );
     },
   });

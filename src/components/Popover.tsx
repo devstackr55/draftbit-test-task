@@ -91,7 +91,7 @@ const MarginPopover: React.FC<{
           </label>
           <div className="flex gap-2">
             <input
-              type="text"
+              type="number"
               className="bg-slate-800 text-[rgb(248,250,252)] rounded px-3 py-1.5 flex-grow focus:ring-2 focus:ring-blue-500 outline-none"
               value={value === "auto" ? "" : value}
               onChange={(e) => onChange(e.target.value)}

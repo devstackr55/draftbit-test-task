@@ -1,6 +1,7 @@
+import { Response } from "express";
+
 import { ERRORS } from "../constant";
 import { AuthenticateError, NotFoundError, ValidationError } from "./error";
-import { Response } from "express";
 
 export const handleError = (res: Response, error: Error): Response => {
   if (error instanceof ValidationError) {

@@ -1,7 +1,15 @@
-import Joi, { Schema, ValidationResult } from "joi";
-import { AuthenticateError, NotFoundError, UniqueConstraintError, ValidationError } from "./error";
-import { handleError, handleSuccess } from "./responseUtils";
 import { Response } from "express";
+import Joi, { Schema, ValidationResult } from "joi";
+
+import {
+  AuthenticateError,
+  NotFoundError,
+  UniqueConstraintError,
+  ValidationError,
+} from "./error";
+
+import { handleError, handleSuccess } from "./responseUtils";
+
 import { ERRORS } from "../constant";
 
 interface JoiFieldsValidatorParams<T> {
@@ -19,17 +27,15 @@ export const joiFieldsValidator = <T>({
   return error;
 };
 
-// Todo: Optimize the code
 export const mapErrorToErrorType = (error: unknown): Error => {
   if (
     error instanceof ValidationError ||
     error instanceof NotFoundError ||
-    error instanceof AuthenticateError||
+    error instanceof AuthenticateError ||
     error instanceof UniqueConstraintError
   ) {
-    return error; // Return the known error as is
+    return error;
   }
-  // Handle unknown errors or wrap in a generic error
   return new Error(ERRORS.UNEXPECTED);
 };
 

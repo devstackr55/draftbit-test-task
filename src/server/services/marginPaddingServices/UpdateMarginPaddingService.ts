@@ -34,7 +34,6 @@ class UpdateMarginPaddingService {
 
       return [null, updatedMarginPadding];
     } catch (error: any) {
-      console.log("errrr", error);
       return [mapErrorToErrorType(error), null];
     }
   }

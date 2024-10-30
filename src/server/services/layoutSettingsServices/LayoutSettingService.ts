@@ -32,12 +32,10 @@ class LayoutSettingService {
         ],
       });
 
-      // Check if layoutSettingsData is empty
       if (!layoutSettingsData || layoutSettingsData.length === 0) {
         throw new ValidationError("Layout settings not found");
       }
 
-      // Format the first layout setting
       const layoutSetting = layoutSettingsData[0];
       const formattedResponse: LayoutSettingResponse = {
         id: layoutSetting.id,
@@ -51,10 +49,9 @@ class LayoutSettingService {
         updatedAt: layoutSetting.updatedAt,
       };
 
-      // Return the formatted response with the first layout setting
       return [null, formattedResponse];
     } catch (error: any) {
-      return [mapErrorToErrorType(error), null]; // Use a utility to map the error to the appropriate type
+      return [mapErrorToErrorType(error), null];
     }
   }
 }
