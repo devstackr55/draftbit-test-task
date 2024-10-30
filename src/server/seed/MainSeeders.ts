@@ -7,12 +7,11 @@ import { Layout } from "../models/Layout";
 import { Effect } from "../models/Effect";
 import { Position } from "../models/Position";
 import { MarginPadding } from "../models/MarginPadding";
-import { MeasurementUnit } from "../models/MeasurementUnit";
+import { MeasurementUnit } from "../constant/MeasurementUnit";
 import { DataSource } from "typeorm";
 
 export default class CreateInitialData implements Seeder {
   public async run(factory: Factory, dataSource: DataSource): Promise<void> {
-    // Create screens
     const screens = await dataSource.manager.save(Screen, [
       { name: "Home Screen" },
       { name: "Profile Screen" },
@@ -21,10 +20,8 @@ export default class CreateInitialData implements Seeder {
     ]);
     const screenIds = screens.map((screen) => screen.id);
 
-    // Component types array for variation
     const componentTypes = ["button", "input", "text", "image", "container"];
 
-    // Create components for each screen
     for (const screenId of screenIds) {
       const components = await dataSource
         .createQueryBuilder()
@@ -43,9 +40,7 @@ export default class CreateInitialData implements Seeder {
         )
         .execute();
 
-      // Create layout settings and related entities for each component
       for (const component of components.identifiers) {
-        // Create layout setting
         const layoutSetting = await dataSource
           .createQueryBuilder()
           .insert()
@@ -57,7 +52,6 @@ export default class CreateInitialData implements Seeder {
 
         const layoutSettingId = layoutSetting.identifiers[0].id;
 
-        // Create border
         await dataSource
           .createQueryBuilder()
           .insert()
@@ -67,7 +61,6 @@ export default class CreateInitialData implements Seeder {
           })
           .execute();
 
-        // Create layout
         await dataSource
           .createQueryBuilder()
           .insert()
@@ -77,7 +70,6 @@ export default class CreateInitialData implements Seeder {
           })
           .execute();
 
-        // Create effect
         await dataSource
           .createQueryBuilder()
           .insert()
@@ -87,7 +79,6 @@ export default class CreateInitialData implements Seeder {
           })
           .execute();
 
-        // Create position
         await dataSource
           .createQueryBuilder()
           .insert()
@@ -97,7 +88,6 @@ export default class CreateInitialData implements Seeder {
           })
           .execute();
 
-        // Create margin padding with random values
         await dataSource
           .createQueryBuilder()
           .insert()
@@ -129,22 +119,20 @@ export default class CreateInitialData implements Seeder {
 
 define(Screen, () => {
   const screen = new Screen();
-  screen.name = "Dashboard Screen"; // Another hardcoded name for the screen
+  screen.name = "Dashboard Screen";
   return screen;
 });
 
-// Define Component with hardcoded data
 define(Component, () => {
   const component = new Component();
-  component.name = "Text Input"; // Hardcoded name for the component
-  component.type = "input"; // Another hardcoded type for the component
+  component.name = "Text Input";
+  component.type = "input";
   return component;
 });
 
-// You can also add more components
 define(Component, () => {
   const component = new Component();
-  component.name = "Image Container"; // Hardcoded name
-  component.type = "container"; // Hardcoded type
+  component.name = "Image Container";
+  component.type = "container";
   return component;
 });

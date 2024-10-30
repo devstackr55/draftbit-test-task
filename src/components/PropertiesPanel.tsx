@@ -1,6 +1,8 @@
 import React from "react";
+
 import Collapsible from "./Collapsible";
 import PaddingMarginConfig from "./PaddingMarginInterface";
+
 import { useLayoutSettings } from "../hooks/useLayoutSettings";
 
 const PropertiesPanel: React.FC = () => {

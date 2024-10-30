@@ -1,10 +1,8 @@
 import convict from "convict";
 import dotenv from "dotenv";
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Define the schema for your configuration
 const config = convict({
   port: {
     doc: "The port to bind.",

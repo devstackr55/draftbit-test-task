@@ -1,4 +1,5 @@
 import { Application, Request, Response } from "express";
+
 import appRouter from "./api";
 
 const initRoutes = (app: Application): void => {

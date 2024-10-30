@@ -1,9 +1,11 @@
 import React, { useState, useCallback } from "react";
-import { getSpacingConfig, SpacingConfig, updateSpacingConfig } from "../utils";
+
+import { SpacingConfig } from "../utils";
+
 import MarginPopover from "./Popover";
+
 import { useMarginPadding } from "../hooks/useMarginPadding";
 import { useUpdateMarginPadding } from "../hooks/useUpdateMarginPadding";
-// import { useResetMarginPadding } from "../hooks/useResetMarginPadding";
 
 interface dataConfig {
   id: number;
@@ -13,12 +15,12 @@ interface dataConfig {
   effectId: string;
   marginPaddingId: string;
   positionId: string;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface PaddingMarginConfigProps {
-  data: dataConfig; // Use the SpacingConfig interface for the data prop
+  data: dataConfig;
 }
 
 const fontStyle = {
@@ -106,8 +108,6 @@ export default function PaddingMarginConfig({
     </button>
   );
 
-  // const resetMutation = useResetMarginPadding();
-
   const handleReset = () => {
     if (activeProperty) {
       const newConfig = {
@@ -134,7 +134,7 @@ export default function PaddingMarginConfig({
     <div className="bg-slate-900 p-8 rounded-lg" style={fontStyle}>
       <div className="text-blue-400 text-sm mb-4">INDIVIDUAL</div>
 
-      <div className="relative flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-2">
         {/* Top margin */}
         <SpacingButton
           value={

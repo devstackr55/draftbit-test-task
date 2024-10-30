@@ -1,4 +1,5 @@
 import express, { Router } from "express";
+
 import marginPaddingRoutes from "./marginPadding.routes";
 
 const router: Router = express.Router();

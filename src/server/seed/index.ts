@@ -5,15 +5,11 @@ import { AppDataSource } from "../data-source";
 
 async function seedDatabase() {
   try {
-    // Initialize the data source
     await AppDataSource.initialize();
-
-    // Initialize and run the seeder
     const seeder = new CreateInitialData();
 
     await seeder.run(factory, AppDataSource);
 
-    // Close the data source connection
     await AppDataSource.destroy();
 
     console.log("Database seeding completed.");
@@ -22,5 +18,4 @@ async function seedDatabase() {
   }
 }
 
-// Execute the seeder function
 seedDatabase();

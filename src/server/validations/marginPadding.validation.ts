@@ -1,6 +1,5 @@
-// src/validations/marginPadding.validation.ts
 import Joi from "joi";
-import { MeasurementUnit } from "../models/MeasurementUnit";
+import { MeasurementUnit } from "../constant/MeasurementUnit";
 
 export const marginPaddingSchema = {
   create: Joi.object({

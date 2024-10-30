@@ -1,5 +1,5 @@
-import { ERROR_NAMES } from '../constant';
-import { ValidationErrorItem } from 'joi';
+import { ERROR_NAMES } from "../constant";
+import { ValidationErrorItem } from "joi";
 
 type CustomValidationMessage = string | { details: ValidationErrorItem[] };
 
@@ -8,17 +8,18 @@ export class ValidationError extends Error {
   fieldErrors: { fieldName: string; message: string }[] = [];
 
   constructor(message: CustomValidationMessage) {
-    super(typeof message === 'string' ? message : "Validation failed");
+    super(typeof message === "string" ? message : "Validation failed");
 
     this.status = 400;
     this.name = ERROR_NAMES.VALIDATION;
 
-    // If message is an object with details, populate fieldErrors
-    if (typeof message !== 'string') {
-      this.fieldErrors = message.details.map(({ path, message }: ValidationErrorItem) => ({
-        fieldName: path[0]?.toString() || '',
-        message,
-      }));
+    if (typeof message !== "string") {
+      this.fieldErrors = message.details.map(
+        ({ path, message }: ValidationErrorItem) => ({
+          fieldName: path[0]?.toString() || "",
+          message,
+        })
+      );
     }
   }
 }

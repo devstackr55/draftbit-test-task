@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import api from "../utils/api";
+
 import { useToast } from "../context/ToastContext";
 
 const updateMarginPadding = async (data: any) => {
@@ -25,7 +27,7 @@ export const useUpdateMarginPadding = () => {
     onError: (err: any) => {
       error(
         `Failed to update margin padding: ${err.message || "Unknown error"}`
-      ); // Error message
+      );
     },
   });
 };

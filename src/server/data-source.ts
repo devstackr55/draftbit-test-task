@@ -13,6 +13,4 @@ export const AppDataSource = new DataSource({
   migrations: ["src/server/migrations/**/*.ts"],
   synchronize: false,
   logging: true,
-  // seeds: ["dist/seeders/**/*{.ts,.js}"], // Ensure this path is correct
-  // factories: ["dist/factories/**/*{.ts,.js}"], // Ensure this path is correct
 });

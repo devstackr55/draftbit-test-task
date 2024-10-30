@@ -1,4 +1,5 @@
 import React, { useState, ReactNode } from "react";
+
 import "./PropertiesPanel.css";
 
 interface CollapsibleProps {

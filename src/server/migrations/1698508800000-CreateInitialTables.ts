@@ -4,7 +4,7 @@ import {
   Table,
   TableForeignKey,
 } from "typeorm";
-import { MeasurementUnit } from "../models/MeasurementUnit";
+import { MeasurementUnit } from "../constant/MeasurementUnit";
 
 export class CreateInitialTables1698508800000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

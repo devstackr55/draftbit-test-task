@@ -5,8 +5,9 @@ import {
   OneToOne,
   JoinColumn,
 } from "typeorm";
+
 import { LayoutSetting } from "./LayoutSetting";
-import { MeasurementUnit } from "./MeasurementUnit";
+import { MeasurementUnit } from "../constant/MeasurementUnit";
 
 @Entity("margin_paddings")
 export class MarginPadding {

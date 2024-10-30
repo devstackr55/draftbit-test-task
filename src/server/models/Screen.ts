@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
+
 import { Component } from "./Component";
 
 @Entity("screens")

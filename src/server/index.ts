@@ -1,6 +1,4 @@
-import "reflect-metadata"; // Ensure this is at the top of your entry file
-import { createConnection } from "typeorm"; // Import TypeORM or your other modules
-
+import "reflect-metadata";
 import express, { Express } from "express";
 import cors from "cors";
 import { AppDataSource } from "./data-source";

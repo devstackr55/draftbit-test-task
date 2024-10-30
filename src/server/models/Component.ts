@@ -6,8 +6,9 @@ import {
   OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn, // Added this import
+  JoinColumn,
 } from "typeorm";
+
 import { LayoutSetting } from "./LayoutSetting";
 import { Screen } from "./Screen";
 
@@ -22,7 +23,7 @@ export class Component {
   @Column({ type: "varchar", length: 50, nullable: true })
   type: string;
 
-  @Column({ name: "screen_id", type: "int" }) // Added type definition
+  @Column({ name: "screen_id", type: "int" })
   screenId: number;
 
   @CreateDateColumn({ name: "created_at" })
@@ -34,7 +35,7 @@ export class Component {
   @ManyToOne(() => Screen, (screen) => screen.components, {
     onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "screen_id" }) // Added JoinColumn decorator
+  @JoinColumn({ name: "screen_id" })
   screen: Screen;
 
   @OneToOne(() => LayoutSetting, (layoutSetting) => layoutSetting.component, {
