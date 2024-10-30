@@ -16,6 +16,7 @@ const MarginPopover: React.FC<{
   handleUnitChange: (value: string) => void;
   unit: string;
   handleReset: () => void;
+  rect: DOMRect | null;
 }> = ({
   isOpen,
   onClose,
@@ -26,14 +27,14 @@ const MarginPopover: React.FC<{
   handleUnitChange,
   unit,
   handleReset,
+  rect,
 }) => {
   const popoverRef = useRef<HTMLDivElement>(null);
   useClickOutside(popoverRef, onClose);
 
-  if (!isOpen || !anchorEl) return null;
+  if (!isOpen || !anchorEl || !rect) return null;
 
   const popoverWidth = 384;
-  const rect = anchorEl.getBoundingClientRect();
   const viewportHeight = window.innerHeight;
   const shouldShowBelow = rect.bottom + popoverWidth <= viewportHeight;
   console.log(rect);

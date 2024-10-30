@@ -34,6 +34,7 @@ export default function PaddingMarginConfig({
   const [unit, setUnit] = useState("");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [rect, setRect] = useState<DOMRect | null>(null);
   const [activeProperty, setActiveProperty] = useState<
     keyof SpacingConfig | null
   >(null);
@@ -54,6 +55,8 @@ export default function PaddingMarginConfig({
       setAnchorEl(event.currentTarget);
       setActiveProperty(property);
       setIsPopoverOpen(true);
+      const newRect = event.currentTarget.getBoundingClientRect();
+      setRect(newRect);
     },
     [spacingConfig]
   );
@@ -76,9 +79,12 @@ export default function PaddingMarginConfig({
     setSelectedValue("");
   }, [activeProperty, spacingConfig, selectedValue, mutation, marginPaddingId]);
 
-  const handleValueChange = (value: string) => {
-    setSelectedValue(value);
-  };
+  const handleValueChange = useCallback(
+    (value: string) => {
+      setSelectedValue(value);
+    },
+    [setSelectedValue]
+  );
 
   const handleUnitChange = (newUnit: string) => {
     const baseProperty = activeProperty?.replace(/Value$/, "Unit"); // e.g., marginTopValue -> marginTop
@@ -268,6 +274,7 @@ export default function PaddingMarginConfig({
             handleUnitChange={handleUnitChange}
             unit={unit}
             handleReset={handleReset}
+            rect={rect}
           />
         )}
       </div>
