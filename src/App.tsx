@@ -1,24 +1,32 @@
 import React from "react";
-import "./App.css";
+
 import PropertiesPanel from "./components/PropertiesPanel";
+import ErrorBoundary from "./components/ErrorBoundary";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import MobileScreen from "./screen/MobileScreen";
+
+import "./App.css";
+
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <div className="App">
-      <QueryClientProvider client={queryClient}>
-        <div className="flex w-full">
-          <PropertiesPanel />
-          <div
-            className="flex justify-center w-full items-center
-          "
-          >
-            <MobileScreen />
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <div className="flex w-full">
+            <PropertiesPanel />
+            <div
+              className="flex justify-center w-full items-center
+            "
+            >
+              <MobileScreen />
+            </div>
           </div>
-        </div>
-      </QueryClientProvider>
+        </QueryClientProvider>  
+      </ErrorBoundary>
     </div>
   );
 }

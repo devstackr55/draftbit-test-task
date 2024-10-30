@@ -4,7 +4,7 @@ import { Router } from "express";
 
 const layoutSettingsRoutes = Router();
 
-layoutSettingsRoutes.post(
+layoutSettingsRoutes.get(
   "/",
   LayoutSettingController.getLayoutSettings
 );
